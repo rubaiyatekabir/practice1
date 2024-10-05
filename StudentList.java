@@ -66,23 +66,18 @@ public class StudentList {
     }
 
     public static String LoadData(String fileName) {
-        String line = null;
         try {
             BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
-            line = fileReader.readLine();
+            return fileReader.readLine();
         } catch (Exception e) {
         }
-        return line;
+        return null;
     }
 
     public static void UpdateContent(String content, String fileName) {
         try {
             BufferedWriter fileWriter = new BufferedWriter(new FileWriter(fileName, true));
-            Date newDate = new Date();
-            String dateStyle = Constants.DateStyle;
-            DateFormat dateFormat = new SimpleDateFormat(dateStyle);
-            String now = dateFormat.format(newDate);
-            fileWriter.write(Constants.StudentEntryDelimiter + content + Constants.UpdateContent + now);
+            fileWriter.write(Constants.StudentEntryDelimiter + content + Constants.UpdateContent + new SimpleDateFormat(Constants.DateStyle).format(new Date()));
             fileWriter.close();
         } catch (Exception e) {
         }
