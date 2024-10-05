@@ -36,13 +36,19 @@ public class StudentList {
         } else if (args[Constants.ZERO].contains(Constants.FindEntry)) {
             System.out.println(Constants.Loading);
             String words[] = fileContents.split(Constants.StudentEntryDelimiter);
-            boolean done = false;
+            //boolean done = false;
+            int indexLocation = Constants.NEGATIVE_ONE;
             String argValue = args[Constants.ZERO].substring(Constants.ONE);
-            for (int index = Constants.ZERO; index < words.length && !done; index++) {
-                if (words[index].equals(argValue)) {
-                    System.out.println(Constants.FoundIt);
-                    done = true;
+            for (int index = Constants.ZERO; index < words.length; index++) {
+                if (words[index].trim().equals(argValue.trim())) {
+                    indexLocation = index;
+                    break;
                 }
+            }
+            if (indexLocation >= Constants.ZERO) {
+                System.out.println(Constants.FoundIt);
+            } else {
+                System.out.println(Constants.NotFound);
             }
             System.out.println(Constants.DataLoad);
         } else if (args[Constants.ZERO].contains(Constants.ShowCount)) {
@@ -66,23 +72,18 @@ public class StudentList {
     }
 
     public static String LoadData(String fileName) {
-        String line = null;
         try {
             BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
-            line = fileReader.readLine();
+            return fileReader.readLine();
         } catch (Exception e) {
         }
-        return line;
+        return null;
     }
 
     public static void UpdateContent(String content, String fileName) {
         try {
             BufferedWriter fileWriter = new BufferedWriter(new FileWriter(fileName, true));
-            Date newDate = new Date();
-            String dateStyle = Constants.DateStyle;
-            DateFormat dateFormat = new SimpleDateFormat(dateStyle);
-            String now = dateFormat.format(newDate);
-            fileWriter.write(Constants.StudentEntryDelimiter + content + Constants.UpdateContent + now);
+            fileWriter.write(Constants.StudentEntryDelimiter + content + Constants.UpdateContent + new SimpleDateFormat(Constants.DateStyle).format(new Date()));
             fileWriter.close();
         } catch (Exception e) {
         }
