@@ -8,49 +8,50 @@ public class StudentList {
     public static void main(String[] args) {
 
         //Check arguments
-        if (args == null || args.length != 1) {
-            System.out.println("Usage: (a | r | c | +studentName | ?studentName)");
+        if (args == null || args.length != Constants.ONE) {
+            System.out.println(Constants.Arguments);
             return;
         }
-        String fileContents = LoadData("Students.txt");
-        if (args[0].equals("a")) {
-            System.out.println("Loading data ...");
-            String words[] = fileContents.split(", ");
+
+        String fileContents = LoadData(Constants.StudentList);
+        if (args[Constants.ZERO].equals(Constants.ShowAll)) {
+            System.out.println(Constants.Loading);
+            String words[] = fileContents.split(Constants.StudentEntryDelimiter);
             for (String word : words) {
                 System.out.println(word);
             }
-            System.out.println("Data Loaded.");
-        } else if (args[0].equals("r")) {
-            System.out.println("Loading data ...");
-            String words[] = fileContents.split(", ");
+            System.out.println(Constants.DataLoad);
+        } else if (args[Constants.ZERO].equals(Constants.ShowRandom)) {
+            System.out.println(Constants.Loading);
+            String words[] = fileContents.split(Constants.StudentEntryDelimiter);
             Random random = new Random();
-            int randomIndex = random.nextInt(0, words.length);
+            int randomIndex = random.nextInt(Constants.ZERO, words.length);
             System.out.println(words[randomIndex]);
-            System.out.println("Data Loaded.");
-        } else if (args[0].contains("+")) {
-            System.out.println("Loading data ...");
-            String argValue = args[0].substring(1);
-            UpdateContent(argValue, "Students.txt");
-            System.out.println("Data Loaded.");
-        } else if (args[0].contains("?")) {
-            System.out.println("Loading data ...");
-            String words[] = fileContents.split(", ");
+            System.out.println(Constants.DataLoad);
+        } else if (args[Constants.ZERO].contains(Constants.AddEntry)) {
+            System.out.println(Constants.Loading);
+            String argValue = args[Constants.ZERO].substring(Constants.ONE);
+            UpdateContent(argValue, Constants.StudentList);
+            System.out.println(Constants.DataLoad);
+        } else if (args[Constants.ZERO].contains(Constants.FindEntry)) {
+            System.out.println(Constants.Loading);
+            String words[] = fileContents.split(Constants.StudentEntryDelimiter);
             boolean done = false;
-            String argValue = args[0].substring(1);
-            for (int index = 0; index < words.length && !done; index++) {
+            String argValue = args[Constants.ZERO].substring(Constants.ONE);
+            for (int index = Constants.ZERO; index < words.length && !done; index++) {
                 if (words[index].equals(argValue)) {
-                    System.out.println("We found it!");
+                    System.out.println(Constants.FoundIt);
                     done = true;
                 }
             }
-            System.out.println("Data Loaded.");
-        } else if (args[0].contains("c")) {
-            System.out.println("Loading data ...");
+            System.out.println(Constants.DataLoad);
+        } else if (args[Constants.ZERO].contains(Constants.ShowCount)) {
+            System.out.println(Constants.Loading);
             char characters[] = fileContents.toCharArray();
             boolean in_word = false;
-            int count = 0;
+            int count = Constants.ZERO;
             for (char character : characters) {
-                if (character == ' ') {
+                if (character == Constants.Space) {
                     if (!in_word) {
                         count++;
                         in_word = true;
@@ -59,8 +60,8 @@ public class StudentList {
                     }
                 }
             }
-            System.out.println(count + " word(s) found ");
-            System.out.println("Data Loaded.");
+            System.out.println(count + Constants.WordFound);
+            System.out.println(Constants.DataLoad);
         }
     }
 
@@ -78,10 +79,10 @@ public class StudentList {
         try {
             BufferedWriter fileWriter = new BufferedWriter(new FileWriter(fileName, true));
             Date newDate = new Date();
-            String dateStyle = "dd/mm/yyyy-hh:mm:ss a";
+            String dateStyle = Constants.DateStyle;
             DateFormat dateFormat = new SimpleDateFormat(dateStyle);
             String now = dateFormat.format(newDate);
-            fileWriter.write(", " + content + "\nList last updated on " + now);
+            fileWriter.write(Constants.StudentEntryDelimiter + content + Constants.UpdateContent + now);
             fileWriter.close();
         } catch (Exception e) {
         }
