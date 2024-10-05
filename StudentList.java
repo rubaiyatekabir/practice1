@@ -7,13 +7,13 @@ public class StudentList {
 
     public static void main(String[] args) {
 
-        //Check arguments
-        if (args == null || args.length != Constants.ONE) {
+        if (ArgumentCheck(args)) {
             System.out.println(Constants.Arguments);
             return;
         }
 
         String fileContents = LoadData(Constants.StudentList);
+
         if (args[Constants.ZERO].equals(Constants.ShowAll)) {
             System.out.println(Constants.Loading);
             String words[] = fileContents.split(Constants.StudentEntryDelimiter);
@@ -21,6 +21,7 @@ public class StudentList {
                 System.out.println(word);
             }
             System.out.println(Constants.DataLoad);
+
         } else if (args[Constants.ZERO].equals(Constants.ShowRandom)) {
             System.out.println(Constants.Loading);
             String words[] = fileContents.split(Constants.StudentEntryDelimiter);
@@ -28,15 +29,16 @@ public class StudentList {
             int randomIndex = random.nextInt(Constants.ZERO, words.length);
             System.out.println(words[randomIndex]);
             System.out.println(Constants.DataLoad);
+
         } else if (args[Constants.ZERO].contains(Constants.AddEntry)) {
             System.out.println(Constants.Loading);
             String argValue = args[Constants.ZERO].substring(Constants.ONE);
             UpdateContent(argValue, Constants.StudentList);
             System.out.println(Constants.DataLoad);
+
         } else if (args[Constants.ZERO].contains(Constants.FindEntry)) {
             System.out.println(Constants.Loading);
             String words[] = fileContents.split(Constants.StudentEntryDelimiter);
-            //boolean done = false;
             int indexLocation = Constants.NEGATIVE_ONE;
             String argValue = args[Constants.ZERO].substring(Constants.ONE);
             for (int index = Constants.ZERO; index < words.length; index++) {
@@ -51,6 +53,7 @@ public class StudentList {
                 System.out.println(Constants.NotFound);
             }
             System.out.println(Constants.DataLoad);
+
         } else if (args[Constants.ZERO].contains(Constants.ShowCount)) {
             System.out.println(Constants.Loading);
             String words[] = fileContents.split(Constants.StudentEntryDelimiter);
@@ -75,6 +78,16 @@ public class StudentList {
             fileWriter.close();
         } catch (Exception e) {
         }
+    }
 
+    public static boolean ArgumentCheck(String[] args) {
+        if (args == null || args.length != Constants.ONE) {
+            return true;
+        } else if (args.length == Constants.ONE && !args[Constants.ZERO].equals(Constants.ShowAll)
+                && !args[Constants.ZERO].equals(Constants.ShowCount) && !args[Constants.ZERO].equals(Constants.ShowRandom) && !args[Constants.ZERO].startsWith(Constants.FindEntry)
+                && !args[Constants.ZERO].startsWith(Constants.AddEntry)) {
+            return true;
+        }
+        return false;
     }
 }
